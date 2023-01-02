@@ -44,10 +44,13 @@ function Login() {
 
         try {
           dispatch(showLoading());
-          const response = await axios.post("/api/users/login", {
-            email,
-            password,
-          });
+          const response = await axios.post(
+            "/api/users/login",
+            {
+              email,
+              password,
+            }
+          );
            dispatch(hideLoading());
           console.log(response.data);
           if (response.data.success) {

@@ -9,6 +9,8 @@ import {Box, CircularProgress} from '@mui/material'
 import {useDispatch, useSelector} from 'react-redux';
 import PublicRoutes from "./components/publicRoutes";
 import ProtectedRoutes from './components/protectedRoutes';
+import Layout from './components/layout';
+import ApplyDoctor from './pages/ApplyDoctor';
 
 function App() {
    const {loading} = useSelector(state=>state.alerts);
@@ -56,6 +58,15 @@ function App() {
             <PublicRoutes>
               <Signup />
             </PublicRoutes>
+          }
+        />
+
+        <Route
+          path="/apply-doctor"
+          element={
+            <ProtectedRoutes>
+              <ApplyDoctor />
+            </ProtectedRoutes>
           }
         />
       </Routes>

@@ -26,11 +26,11 @@ export default function ProtectedRoutes(props) {
       console.log(response.data);
       if (response.data.success) {
       } else {
-        localStorage.clear;
+        localStorage.clear();
         navigate("/login");
       }
     } catch (err) {
-      localStorage.clear;
+      localStorage.clear();
       dispatch(hideLoading());
       navigate("/login");
     }

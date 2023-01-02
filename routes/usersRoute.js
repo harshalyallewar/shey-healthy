@@ -1,9 +1,13 @@
 const express = require("express");
+const app = express();
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../models/usersModel");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middlewares/authMiddleware");
+const cors = require("cors");
+
+
 
 router.post("/register", async (req, res) => {
   try {
@@ -24,11 +28,12 @@ router.post("/register", async (req, res) => {
       .status(200)
       .send({ message: "User Created Succesfully", success: true });
   } catch (err) {
-    res.status(500).send({ message: "Error in creating user", success: false });
+    res.status(500).send({ message: "Error in creating user", success: false , err});
   }
 });
 
 router.post("/login", async (req, res) => {
+  console.log("login called")
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
@@ -57,7 +62,9 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.send(200).send({ message: "Something went wrong", success: false });
+    res
+      .status(200)
+      .send({ message: "Something went wrong", success: false });
   }
 });
 

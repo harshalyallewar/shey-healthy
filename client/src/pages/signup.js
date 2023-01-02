@@ -48,7 +48,10 @@ function Signup() {
       
       try {
         dispatch(showLoading());
-        const response = await axios.post("/api/users/register", {name, email, password});
+        const response = await axios.post(
+          "/api/users/register",
+          { name, email, password }
+        );
         console.log(response.data);
         dispatch(hideLoading());
         if (response.data.success) {

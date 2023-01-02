@@ -4,6 +4,7 @@ import '../layout.css'
 import CssBaseline from "@mui/material/CssBaseline";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
@@ -94,7 +95,7 @@ function Layout(props) {
               let isActive = Location.pathname === obj.path;
 
               return (
-                <div className={`menuitem ${isActive && "active-menu-item"}`}>
+                <div key={obj.name} className={`menuitem ${isActive && "active-menu-item"}`}>
                   {obj.icon}
                   {!collapsed && <Link to={obj.path}>{obj.name}</Link>}
                 </div>
@@ -113,11 +114,16 @@ function Layout(props) {
               }}
             >
               {collapsed ? (
-                <MenuIcon sx={{ fontSize: "35px" }} />
+                <MenuIcon sx={{ fontSize: "32px" }} />
               ) : (
-                <CloseRoundedIcon sx={{ fontSize: "35px" }} />
+                <CloseRoundedIcon sx={{ fontSize: "32px" }} />
               )}
             </IconButton>
+            
+            <div className='rightside'>
+            <NotificationsNoneIcon sx={{color:'black', fontSize: '32px'}}/>
+            <Link to='/profile'>Harshal</Link>
+            </div>
           </div>
 
           <div className="body">{props.children}</div>

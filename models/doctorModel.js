@@ -13,6 +13,10 @@ const doctorSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  website: {
+    type: String,
+    required: true,
+  },
   address: {
     type: String,
     required: true,
@@ -29,11 +33,22 @@ const doctorSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  timings: {
-    type: Array,
+  startTime: {
+    type: String,
     required: true,
   },
-  status:"pending"
+  endTime: {
+    type: String,
+    required: true,
+  },
+  status:{
+    type: String,
+    default:"pending"
+  }
+  ,
+  userId:{
+    type: String
+  }
 },{
     timestamps : true
 });

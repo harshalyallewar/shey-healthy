@@ -1,13 +1,14 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 import TimePicker from "react-time-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { hideLoading, showLoading } from "../../redux/alertsSlice";
 
-function ApplyDoctor() {
+function DoctorProfile() {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
@@ -32,11 +33,11 @@ function ApplyDoctor() {
     endTime
   );
 
-  const {userDetails} = useSelector((state)=>state.user);
+  const { userDetails } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onFinish = async () => {
+  const updateDoctor = async () => {
     if (
       !firstName ||
       !lastName ||
@@ -53,8 +54,9 @@ function ApplyDoctor() {
       return;
     }
     try {
+      dispatch(showLoading());
       const response = await axios.post(
-        "/api/users/apply-doctor-account",
+        "/api/admin/update-doctor-profile",
         {
           firstName,
           lastName,
@@ -74,16 +76,62 @@ function ApplyDoctor() {
           },
         }
       );
+      
+      dispatch(hideLoading());
 
-      if(response.data.success){
-        toast.success("Succesfully applied for doctor account");
+      if (response.data.success) {
+        toast.success("Succesfully updated for doctor account");
       } else {
-        toast.error("error in applying, please try again");
+        toast.error("error in updating, please try again");
       }
-    } catch(err) {
-        console.log("error occured in requesting apply doctor account")
+    } catch (err) {
+      dispatch(hideLoading());
+      console.log("error occured in requesting apply doctor account");
     }
   };
+
+  const prePopulateDoctorInfo = async ()=>{
+        try {
+
+          dispatch(showLoading());
+      const response = await axios.get(
+        "/api/admin/get-doctor-info-by-userid",
+       
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+          
+      dispatch(hideLoading());
+
+      if (response.data.success) {
+         const res = response.data.data;
+         console.log(res);
+
+         setfirstName(res.firstName);
+         setlastName(res.lastName)
+         setphoneNumber(res.phoneNumber)
+         setaddress(res.address)
+         setspecialization(res.specialization)
+         setexperience(res.experience)
+         setfeePerConsultation(res.feePerConsultation)
+         setwebsite(res.website)
+         setstartTime(res.startTime)
+         setendTime(res.endTime)
+      } else {
+        toast.error("error in getting doctor info, please try again");
+      }
+    } catch (err) {
+      dispatch(hideLoading());
+      console.log("error occured in getting doctor info");
+    }
+  }
+
+  useEffect(()=>{
+    prePopulateDoctorInfo();
+  },[])
 
   const h1style = {
     fontSize: "28px",
@@ -122,6 +170,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>First Name</Typography>
           <TextField
+            value={firstName}
             fullWidth
             size="small"
             onChange={(e) => setfirstName(e.target.value)}
@@ -130,6 +179,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Last Name</Typography>
           <TextField
+            value={lastName}
             fullWidth
             size="small"
             onChange={(e) => setlastName(e.target.value)}
@@ -138,6 +188,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Phone Number</Typography>
           <TextField
+            value={phoneNumber}
             fullWidth
             size="small"
             onChange={(e) => setphoneNumber(e.target.value)}
@@ -146,6 +197,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Website</Typography>
           <TextField
+            value={website}
             fullWidth
             size="small"
             onChange={(e) => setwebsite(e.target.value)}
@@ -154,6 +206,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Address</Typography>
           <TextField
+            value={address}
             fullWidth
             size="small"
             onChange={(e) => setaddress(e.target.value)}
@@ -170,6 +223,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Specialization</Typography>
           <TextField
+            value={specialization}
             fullWidth
             size="small"
             onChange={(e) => setspecialization(e.target.value)}
@@ -178,6 +232,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Experience</Typography>
           <TextField
+            value={experience}
             fullWidth
             size="small"
             onChange={(e) => setexperience(e.target.value)}
@@ -186,6 +241,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={4} sx={griditemStyle}>
           <Typography sx={typoStyle}>Fee Per Consultation</Typography>
           <TextField
+            value={feePerConsultation}
             fullWidth
             size="small"
             onChange={(e) => setfeePerConsultation(e.target.value)}
@@ -204,13 +260,7 @@ function ApplyDoctor() {
         <Grid item xs={12} lg={2} sx={griditemStyle}>
           <Typography sx={typoStyle}>End Time</Typography>
 
-          <TimePicker
-            className="timepicker"
-            minutePlaceholder="MM"
-            hourPlaceholder="HH"
-            onChange={(val) => setendTime(val)}
-            value={endTime}
-          />
+          <TimePicker onChange={(val) => setendTime(val)} value={endTime} />
         </Grid>
 
         <Grid
@@ -220,7 +270,7 @@ function ApplyDoctor() {
           sx={{ display: "flex", alignItems: "center", justifyContent: "end" }}
         >
           <Button
-            onClick={onFinish}
+            onClick={updateDoctor}
             sx={{ backgroundColor: "#005555", mr: "70px" }}
             variant="contained"
             size="large"
@@ -233,4 +283,4 @@ function ApplyDoctor() {
   );
 }
 
-export default ApplyDoctor;
+export default DoctorProfile;

@@ -52,7 +52,7 @@ function Signup() {
           "/api/users/register",
           { name, email, password }
         );
-        console.log(response.data);
+
         dispatch(hideLoading());
         if (response.data.success) {
           toast.success(response.data.message);
@@ -119,8 +119,8 @@ function Signup() {
     const btnStyle = {
       width: "100%",
       backgroundColor: "#005555",
-      "&:hover": {
-        backgroundColor: "#018c8c",
+      ":hover": {
+        backgroundColor: "#005555",
       },
     }; 
 

@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
         return res.status(401).send({ message: "auth failed token invalid", success: false });
       } else {
         req.body.userid = decoded.id;
-        console.log(decoded);
         next();
       }
     });

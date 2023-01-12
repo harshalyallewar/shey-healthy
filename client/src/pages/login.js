@@ -20,6 +20,7 @@ import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import {showLoading, hideLoading} from '../redux/alertsSlice'
+import { setUser } from "../redux/userInfo";
 
 function Login() {
 
@@ -52,12 +53,15 @@ function Login() {
             }
           );
            dispatch(hideLoading());
-          console.log(response.data);
+        
           if (response.data.success) {
             toast.success(response.data.message);
             toast("redirecting to home page");
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            localStorage.setItem("id", response.data.id);
+
+
             navigate("/");
           } else {
             toast.error(response.data.message);
@@ -145,7 +149,13 @@ function Login() {
           <Grid item xs={12} sx={{ mr: "10px" }}>
             <Button
               onClick={onFinish}
-              sx={{ width: "100%", backgroundColor: "#005555" }}
+              sx={{
+                width: "100%",
+                ":hover": {
+                  backgroundColor: "#005555",
+                },
+                backgroundColor: "#005555",
+              }}
               variant="contained"
               size="large"
             >

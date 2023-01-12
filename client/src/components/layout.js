@@ -8,8 +8,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import { Typography, IconButton } from "@mui/material";
-import { Link, useLocation } from 'react-router-dom';
+import { Typography, IconButton, Badge } from "@mui/material";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from 'react-redux';
@@ -17,9 +17,9 @@ import { useSelector } from 'react-redux';
 function Layout(props) {
 
     const [collapsed, setCollapsed] = useState(false);
-    const {user} = useSelector((state)=>state.user);
+    const {userDetails} = useSelector((state)=>state.user);
     const Location = useLocation();
-    console.log("redux user",user);
+    const navigate = useNavigate();
 
     const iconStyle = {
          fontSize: "28px" 
@@ -32,8 +32,8 @@ function Layout(props) {
         icon: <HomeOutlinedIcon sx={iconStyle} />,
       },
       {
-        name: "Appointments",
-        path: "/appointments",
+        name: "Appointment",
+        path: "/user/appointments/",
         icon: <ListAltOutlinedIcon sx={iconStyle} />,
       },
       {
@@ -53,6 +53,30 @@ function Layout(props) {
       },
     ];
 
+    const doctorMenu = [
+      {
+        name: "Home",
+        path: "/",
+        icon: <HomeOutlinedIcon sx={iconStyle} />,
+      },
+      {
+        name: "Appointments",
+        path: "/doctor/appointments",
+        icon: <ListAltOutlinedIcon sx={iconStyle} />,
+      },
+     
+      {
+        name: "Profile",
+        path: "/doctor/profile",
+        icon: <PersonOutlineOutlinedIcon sx={iconStyle} />,
+      },
+      {
+        name: "Logout",
+        path: "/logout",
+        icon: <ExitToAppOutlinedIcon sx={iconStyle} />,
+      },
+    ];
+
         const adminMenu = [
           {
             name: "Home",
@@ -61,12 +85,12 @@ function Layout(props) {
           },
           {
             name: "Users",
-            path: "/users",
+            path: "/admin/userslist",
             icon: <ListAltOutlinedIcon sx={iconStyle} />,
           },
           {
             name: "Doctors",
-            path: "/doctors",
+            path: "/admin/doctorslist",
             icon: <AccountBoxOutlinedIcon sx={iconStyle} />,
           },
           {
@@ -81,21 +105,31 @@ function Layout(props) {
           },
         ];
 
-    const menuToBeRendered = user?.isAdmin ? adminMenu :userMenu ;
+    const menuToBeRendered = userDetails?.isAdmin ? adminMenu : userDetails?.isDoctor ? doctorMenu : userMenu ;
 
   return (
     <>
-      <Container maxWidth="xl" sx={{ display: "flex", p: {xs:0.7,sm:2} }}>
+      <Container maxWidth="xl" sx={{ display: "flex", p: { xs: 0.7, sm: 2 } }}>
         <div className="sidebar">
           <div className="sidebarheading">
             <h1>SH</h1>
+            <h1 className='role'>
+              {userDetails?.isAdmin
+                ? "Admin"
+                : userDetails?.isDoctor
+                ? "Doctor"
+                : "User"}
+            </h1>
           </div>
           <div className="menu">
             {menuToBeRendered.map((obj) => {
               let isActive = Location.pathname === obj.path;
 
               return (
-                <div key={obj.name} className={`menuitem ${isActive && "active-menu-item"}`}>
+                <div
+                  key={obj.name}
+                  className={`menuitem ${isActive && "active-menu-item"}`}
+                >
                   {obj.icon}
                   {!collapsed && <Link to={obj.path}>{obj.name}</Link>}
                 </div>
@@ -119,10 +153,26 @@ function Layout(props) {
                 <CloseRoundedIcon sx={{ fontSize: "32px" }} />
               )}
             </IconButton>
-            
-            <div className='rightside'>
-            <NotificationsNoneIcon sx={{color:'black', fontSize: '32px'}}/>
-            <Link to='/profile'>Harshal</Link>
+
+            <div className="rightside">
+              <IconButton onClick={() => navigate("/notifications")}>
+                <Badge
+                  badgeContent={
+                    userDetails != "null"
+                      ? userDetails.unseenNotifications.length
+                      : 0
+                  }
+                  color="error"
+                >
+                  <NotificationsNoneIcon
+                    sx={{ color: "black", fontSize: "32px" }}
+                  />
+                </Badge>
+              </IconButton>
+
+              <Link to="/profile" style={{ color: "black" }}>
+                {userDetails.name}
+              </Link>
             </div>
           </div>
 

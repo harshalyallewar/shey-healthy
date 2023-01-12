@@ -11,6 +11,14 @@ import PublicRoutes from "./components/publicRoutes";
 import ProtectedRoutes from './components/protectedRoutes';
 import Layout from './components/layout';
 import ApplyDoctor from './pages/ApplyDoctor';
+import Doctors from './pages/admin/Doctors';
+import Notifications from './pages/Notifications';
+import Users from './pages/admin/Users';
+import Logout from './pages/logout';
+import DoctorProfile from'./pages/doctor/doctorProfile';
+import BookAppointments from './pages/BookAppointments';
+import DoctorAppointments from './pages/doctor/doctorAppointment';
+import UserAppointments from './pages/UserAppointments'
 
 function App() {
    const {loading} = useSelector(state=>state.alerts);
@@ -60,12 +68,82 @@ function App() {
             </PublicRoutes>
           }
         />
+        <Route
+          path="/logout"
+          element={
+            <ProtectedRoutes>
+              <Logout />
+            </ProtectedRoutes>
+          }
+        />
 
         <Route
           path="/apply-doctor"
           element={
             <ProtectedRoutes>
               <ApplyDoctor />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoutes>
+              <Notifications />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/admin/doctorslist"
+          element={
+            <ProtectedRoutes>
+              <Doctors />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/admin/userslist"
+          element={
+            <ProtectedRoutes>
+              <Users />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/doctor/profile"
+          element={
+            <ProtectedRoutes>
+              <DoctorProfile />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/book-appointment/:doctorId"
+          element={
+            <ProtectedRoutes>
+              <BookAppointments />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/doctor/appointments"
+          element={
+            <ProtectedRoutes>
+              <DoctorAppointments />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/user/appointments"
+          element={
+            <ProtectedRoutes>
+              <UserAppointments />
             </ProtectedRoutes>
           }
         />

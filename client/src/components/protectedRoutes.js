@@ -23,8 +23,9 @@ export default function ProtectedRoutes(props) {
         }
       );
       dispatch(hideLoading());
-      console.log(response.data);
+      
       if (response.data.success) {
+        dispatch(setUser(response.data.user));
       } else {
         localStorage.clear();
         navigate("/login");
@@ -37,11 +38,11 @@ export default function ProtectedRoutes(props) {
   };
 
   useEffect(() => {
-    if (!userDetails) {
-      console.log("not userdetails");
+    if (userDetails=="null") {
+      getUserInfo();
     }
-    getUserInfo();
-  }, []);
+    
+  }, [userDetails]);
 
   if (localStorage.getItem("token")) {
     return props.children;

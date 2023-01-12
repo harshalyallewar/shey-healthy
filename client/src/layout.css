@@ -11,6 +11,26 @@
   align-items: center;
 }
 
+.sidebarheading {
+  width:100%;
+}
+
+.sidebarheading h1 { 
+	margin: 0;
+	
+	color: white;
+	padding: 10px;
+
+  font-size: 45px;
+}
+
+ .role {
+     font-size: 15px !important;
+     margin-bottom: 40px !important;
+     margin-top: -18px !important;
+     font-weight: 400;
+}
+
 .content {
   width: 100%;
   border-radius: 5px;
@@ -34,6 +54,10 @@ display: flex;
 margin-right: 35px;
 }
 
+.header .rightside a {
+  margin-left:13px
+}
+
 .header a {
   margin-left: 5px;
   font-size: 18px;
@@ -47,12 +71,7 @@ margin-right: 35px;
   padding: 15px;
 }
 
-.sidebarheading h1 { 
-	margin: 0;
-	margin-bottom: 40px;
-	color: white;
-	padding: 10px;
-}
+
 
 .menu {
     display: flex;
@@ -84,6 +103,16 @@ margin-right: 35px;
     padding: 8px 0px;
     padding-left: 15px;
     padding-right: 30px;
+}
+
+.timepickerdiv {
+  padding: 5px;
+}
+
+.timepicker {
+ border: none;
+ box-shadow: none;
+ border-style: none;
 }
 
 

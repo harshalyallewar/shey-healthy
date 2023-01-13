@@ -15,6 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/alertsSlice";
 import axios from "axios";
+import moment from "moment";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -64,8 +65,8 @@ function Users() {
     <Layout>
       <h1 style={h1Style}>Users List</h1>
 
-      <TableContainer sx={{ height: "520px" }}>
-        <Table sx={{ tableLayout: "fixed" }}>
+      <TableContainer >
+        <Table sx={{ tableLayout: "auto" }}>
           <TableHead>
             <TableRow sx={{ height: "80px" }}>
               <TableCell sx={thcellStyle}>Name</TableCell>
@@ -78,14 +79,10 @@ function Users() {
             {users.map((user, index) => {
               return (
                 <TableRow key={index}>
+                  <TableCell sx={{ color: "#242323" }}>{user.name}</TableCell>
+                  <TableCell sx={{ color: "#242323" }}>{user.email}</TableCell>
                   <TableCell sx={{ color: "#242323" }}>
-                    {user.name}
-                  </TableCell>
-                  <TableCell sx={{ color: "#242323" }}>
-                    {user.email}
-                  </TableCell>
-                  <TableCell sx={{ color: "#242323" }}>
-                    {user.createdAt}
+                    {moment(user.createdAt).format('DD-MM-YYYY')}
                   </TableCell>
                   <TableCell>
                     <Link sx={{ cursor: "pointer" }}>Block</Link>

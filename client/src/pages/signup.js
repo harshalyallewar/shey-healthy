@@ -80,11 +80,12 @@ function Signup() {
     };
 
     const paperStyle = {
-      
       display: "flex",
-      flexDirection:'column',
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+     
+      m: { xs: "30px", sm: "0px" },
     };
 
     const textfieldStyle = {
@@ -117,7 +118,7 @@ function Signup() {
     };
 
     const btnStyle = {
-      width: "100%",
+      width:{ xs:'84%',sm:'100%'},
       backgroundColor: "#005555",
       ":hover": {
         backgroundColor: "#005555",
@@ -130,7 +131,7 @@ function Signup() {
         <Grid
           component="form"
           container
-          sx={{ width: { xs: "375px" }, p: { xs: "22px" } }}
+          sx={{ width: { xs: "100%", sm: "375px" }, p: { xs: "22px" } }}
         >
           <Grid item xs={12} sx={griditemStyle}>
             <h1 style={h1Style}>Nice to meet you</h1>

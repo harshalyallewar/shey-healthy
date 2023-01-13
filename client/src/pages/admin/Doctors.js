@@ -101,8 +101,8 @@ function Doctors() {
     <Layout>
       <h1 style={h1Style}>Doctors List</h1>
 
-      <TableContainer sx={{ height: "520px" }}>
-        <Table sx={{ tableLayout: "fixed" }}>
+      <TableContainer>
+        <Table sx={{ tableLayout: "auto" }}>
           <TableHead>
             <TableRow sx={{ height: "80px" }}>
               <TableCell sx={thcellStyle}>Name</TableCell>

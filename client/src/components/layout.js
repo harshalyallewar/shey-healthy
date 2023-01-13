@@ -1,7 +1,6 @@
 import { Container } from '@mui/system';
 import React, { useState } from 'react'
 import '../layout.css'
-import CssBaseline from "@mui/material/CssBaseline";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -41,16 +40,8 @@ function Layout(props) {
         path: "/apply-doctor",
         icon: <AccountBoxOutlinedIcon sx={iconStyle} />,
       },
-      {
-        name: "Profile",
-        path: "/profile",
-        icon: <PersonOutlineOutlinedIcon sx={iconStyle} />,
-      },
-      {
-        name: "Logout",
-        path: "/logout",
-        icon: <ExitToAppOutlinedIcon sx={iconStyle} />,
-      },
+     
+     
     ];
 
     const doctorMenu = [
@@ -70,11 +61,7 @@ function Layout(props) {
         path: "/doctor/profile",
         icon: <PersonOutlineOutlinedIcon sx={iconStyle} />,
       },
-      {
-        name: "Logout",
-        path: "/logout",
-        icon: <ExitToAppOutlinedIcon sx={iconStyle} />,
-      },
+      
     ];
 
         const adminMenu = [
@@ -98,22 +85,21 @@ function Layout(props) {
             path: "/profile",
             icon: <PersonOutlineOutlinedIcon sx={iconStyle} />,
           },
-          {
-            name: "Logout",
-            path: "/logout",
-            icon: <ExitToAppOutlinedIcon sx={iconStyle} />,
-          },
+       
         ];
 
     const menuToBeRendered = userDetails?.isAdmin ? adminMenu : userDetails?.isDoctor ? doctorMenu : userMenu ;
 
   return (
-    <>
-      <Container maxWidth="xl" sx={{ display: "flex", p: { xs: 0.7, sm: 2 } }}>
-        <div className="sidebar">
+    <div style={{ height: "100vh", overflowX: "scroll" }}>
+      <Container
+        maxWidth="xl"
+        sx={{ display: "flex", p: { xs: 0.7, sm: 2 }, height: "100%" }}
+      >
+        <div className={`sidebar ${collapsed && "collapse"}`}>
           <div className="sidebarheading">
             <h1>SH</h1>
-            <h1 className='role'>
+            <h1 className="role">
               {userDetails?.isAdmin
                 ? "Admin"
                 : userDetails?.isDoctor
@@ -127,14 +113,36 @@ function Layout(props) {
 
               return (
                 <div
+                  onClick={() => navigate(obj.path)}
                   key={obj.name}
                   className={`menuitem ${isActive && "active-menu-item"}`}
                 >
                   {obj.icon}
-                  {!collapsed && <Link to={obj.path}>{obj.name}</Link>}
+                  {!collapsed && (
+                    <Link className="menuNamesHiddenInMobile" to={obj.path}>
+                      {obj.name}
+                    </Link>
+                  )}
                 </div>
               );
             })}
+
+            <div
+              onClick={() => {               
+              localStorage.clear();
+              
+
+            }}
+              key="logout"
+              className={`menuitem`}
+            >
+              <ExitToAppOutlinedIcon sx={iconStyle} />
+              {!collapsed && (
+                <Link className="menuNamesHiddenInMobile" to='/login'>
+                  Logout
+                </Link>
+              )}
+            </div>
           </div>
         </div>
 
@@ -179,7 +187,7 @@ function Layout(props) {
           <div className="body">{props.children}</div>
         </div>
       </Container>
-    </>
+    </div>
   );
 }
 

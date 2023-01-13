@@ -48,8 +48,6 @@ function Appointments() {
     }
   };
 
-
-
   useEffect(() => {
     getAppointments();
   }, []);
@@ -73,8 +71,8 @@ function Appointments() {
     <Layout>
       <h1 style={h1Style}>Appointments</h1>
 
-      <TableContainer sx={{ height: "520px" }}>
-        <Table sx={{ tableLayout: "fixed" }}>
+      <TableContainer >
+        <Table sx={{ tableLayout: "auto" }}>
           <TableHead>
             <TableRow sx={{ height: "80px" }}>
               <TableCell sx={thcellStyle}>Id</TableCell>
@@ -95,17 +93,11 @@ function Appointments() {
                   <TableCell sx={{ color: "#242323" }}>
                     {app.doctorInfo.phoneNumber}
                   </TableCell>
-                  <TableCell sx={{ color: "#242323" }}>
+                  <TableCell sx={{ color: "#242323"}}>
                     {moment(app.date).format("YYYY-MM-DD")} {"   "}
                     {moment(app.time).format("HH:mm")}
                   </TableCell>
-                  <TableCell>
-                   
-                      
-                        {app.status}
-                    
-                    
-                  </TableCell>
+                  <TableCell>{app.status}</TableCell>
                 </TableRow>
               );
             })}

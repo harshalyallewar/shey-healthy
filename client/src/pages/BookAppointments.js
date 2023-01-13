@@ -1,12 +1,9 @@
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import Layout from "../components/layout";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateTimePicker from "@mui/lab/DateTimePicker";
-import TimePicker from "react-time-picker";
+import bookNow from "../images/bookNow.jpeg";
+
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -19,9 +16,10 @@ function BookAppointments() {
   const [isAvailable, setisAvailable] = useState(false);
   const [doctor, setDoctor] = useState(null);
   const { userDetails } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
-  
+
   const bookAppointment = async () => {
     try {
       const response = await axios.post(
@@ -33,7 +31,7 @@ function BookAppointments() {
           date,
           doctorInfo: doctor,
           userInfo: userDetails,
-          status:'pending'
+          status: "pending",
         },
         {
           headers: {
@@ -43,13 +41,13 @@ function BookAppointments() {
       );
 
       if (response.data.success) {
-        setisAvailable(false)
+        setisAvailable(false);
+        navigate("/user/appointments");
         toast.success("Succesfully booked for doctor appointment");
       } else {
         toast.error(response.data.message);
       }
     } catch (err) {
-      console.log("error occured in booking appointment");
       toast.error("something went wrong");
     }
   };
@@ -61,7 +59,7 @@ function BookAppointments() {
         {
           doctorId: params.doctorId,
           time,
-          date
+          date,
         },
         {
           headers: {
@@ -101,7 +99,7 @@ function BookAppointments() {
 
       if (response.data.success) {
         const res = response.data.data;
-        console.log(res)
+        console.log(res);
         setDoctor(res);
       } else {
         toast.error("error in getting doctor info, please try again");
@@ -120,7 +118,7 @@ function BookAppointments() {
 
   return (
     <Layout>
-      <Grid container sx={{ p: "10px" }}>
+      <Grid container sx={{ p: "20px" }} className="bookAppGridContainer">
         <Grid item xs={12}>
           <Typography variant="h2" sx={{ fontSize: "27px", fontWeight: "400" }}>
             {doctor?.firstName} {doctor?.lastName}
@@ -128,27 +126,103 @@ function BookAppointments() {
           <hr />
         </Grid>
 
-        <Grid item xs={12} sm={4}>
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img src={bookNow} width="250" height="250" />
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          sx={{ px: { xs: "5px", sm: "90px" }, py: "20px" }}
+        >
           <Typography
             variant="h5"
-            sx={{ mb: "28px", fontSize: "18px", fontWeight: "400" }}
+            sx={{ mb: "5px", fontSize: "15px", fontWeight: "400" }}
           >
             Timings :{" "}
             <Typography
-              sx={{ display: "inline", fontSize: "16px", fontWeight: "400" }}
+              sx={{ display: "inline", fontSize: "14px", fontWeight: "400" }}
             >
-              {doctor?.startTime}{" - "} {doctor?.endTime}
+              {doctor?.startTime}
+              {" - "} {doctor?.endTime}
             </Typography>
           </Typography>
-          <Box>
+
+          <Typography
+            variant="h5"
+            sx={{ mb: "5px", fontSize: "15px", fontWeight: "400" }}
+          >
+            Address :{" "}
+            <Typography
+              sx={{ display: "inline", fontSize: "14px", fontWeight: "400" }}
+            >
+              {doctor?.address}
+            </Typography>
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{ mb: "5px", fontSize: "15px", fontWeight: "400" }}
+          >
+            Fee per visit :{" "}
+            <Typography
+              sx={{ display: "inline", fontSize: "14px", fontWeight: "400" }}
+            >
+              {doctor?.feePerConsultation}
+            </Typography>
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{ mb: "5px", fontSize: "15px", fontWeight: "400" }}
+          >
+            website :{" "}
+            <Typography
+              sx={{ display: "inline", fontSize: "14px", fontWeight: "400" }}
+            >
+              {doctor?.website}
+            </Typography>
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{ mb: "34px", fontSize: "15px", fontWeight: "400" }}
+          >
+            Phone Number :{" "}
+            <Typography
+              sx={{ display: "inline", fontSize: "14px", fontWeight: "400" }}
+            >
+              {doctor?.phoneNumber}
+            </Typography>
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: { xs: "flex-start" ,sm:'center'},
+              justifyContent: "flex-start",
+              p: "10px",
+            }}
+          >
             <TextField
-              size="small"
+              size="large"
               label="Select Date"
               type="date"
               InputLabelProps={{
                 shrink: true,
               }}
-              sx={{ width: 220, mb: "22px" }}
+              sx={{ width: { xs: 220, sm: 300 }, mb: "22px" }}
               onChange={(val) => {
                 setDate(moment(val.target.value).format("DD-MM-YYYY"));
                 setisAvailable(false);
@@ -156,14 +230,14 @@ function BookAppointments() {
             />
 
             <TextField
-              size="small"
+              size="large"
               defaultValue={time}
               label="Select Time"
               type="time"
               InputLabelProps={{
                 shrink: true,
               }}
-              sx={{ width: 220, mb: "22px" }}
+              sx={{ width: { xs: 220, sm: 300 }, mb: "22px" }}
               onChange={(val) => {
                 setTime(val.target.value);
                 setisAvailable(false);
@@ -173,9 +247,10 @@ function BookAppointments() {
             {isAvailable ? (
               <Button
                 variant="contained"
+                size="large"
                 sx={{
                   display: "block",
-                  width: 220,
+                  width: { xs: 220, sm: 300 },
                   mb: "22px",
                   textTransform: "none",
                   ":hover": {
@@ -193,9 +268,10 @@ function BookAppointments() {
               <Button
                 onClick={checkAppointment}
                 variant="contained"
+                size="large"
                 sx={{
                   display: "block",
-                  width: 220,
+                  width: { xs: 220, sm: 300 },
                   mb: "22px",
                   textTransform: "none",
                   ":hover": {

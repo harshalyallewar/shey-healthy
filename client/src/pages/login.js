@@ -86,6 +86,8 @@ function Login() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+   
+    m:{xs:'30px',sm:'0px'}
   };
 
   const textfieldStyle = {
@@ -120,7 +122,7 @@ function Login() {
   return (
     <div style={containerStyle}>
       <Paper sx={paperStyle}>
-        <Grid container sx={{ width: { xs: "375px" }, p: { xs: "22px" } }}>
+        <Grid container sx={{ width: { xs: "100%",sm:'375px' }, p: { xs: "22px" } }}>
           <Grid item xs={12} sx={griditemStyle}>
             <h1 style={hStyle}>Nice to meet you</h1>
           </Grid>
@@ -150,7 +152,7 @@ function Login() {
             <Button
               onClick={onFinish}
               sx={{
-                width: "100%",
+                width: {xs:'92%',sm:'100%'},
                 ":hover": {
                   backgroundColor: "#005555",
                 },

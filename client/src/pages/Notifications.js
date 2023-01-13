@@ -129,7 +129,7 @@ function Notifications() {
               return (
                 <Paper
                   key={index}
-                  sx={{ p: "10px", color: "text.secondary", mb: "3px" }}
+                  sx={{ p: "10px", color: "text.secondary", mb: "7px" }}
                   elevation={1}
                   onClick={() => navigate("/admin/doctorslist")}
                 >
@@ -150,9 +150,9 @@ function Notifications() {
               return (
                 <Paper
                   key={index}
-                  sx={{ p: "10px", color: "text.secondary", mb: "3px" }}
+                  sx={{ p: "10px", color: "text.secondary", mb: "7px" }}
                   elevation={1}
-                  onClick={() => navigate("/admin/doctorslist")}
+                  onClick={() => navigate(notification.onClickPath)}
                 >
                   {notification.message}
                 </Paper>

@@ -99,7 +99,7 @@ function DoctorAppointments() {
     <Layout>
       <h1 style={h1Style}>Appointments</h1>
 
-      <TableContainer sx={{ height: "520px" }}>
+      <TableContainer >
         <Table sx={{ tableLayout: "fixed" }}>
           <TableHead>
             <TableRow sx={{ height: "80px" }}>
@@ -108,6 +108,7 @@ function DoctorAppointments() {
               <TableCell sx={thcellStyle}>Phone</TableCell>
               <TableCell sx={thcellStyle}>Date & time</TableCell>
               <TableCell sx={thcellStyle}>Status</TableCell>
+              <TableCell sx={thcellStyle}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -124,6 +125,9 @@ function DoctorAppointments() {
                   <TableCell sx={{ color: "#242323" }}>
                     {moment(app.date).format("YYYY-MM-DD")} {"   "}
                     {moment(app.time).format("HH:mm")}
+                  </TableCell>
+                  <TableCell sx={{ color: "#242323" }}>
+                    {app.status}
                   </TableCell>
                   <TableCell>
                     {app.status === "pending" && (

@@ -12,6 +12,10 @@ app.use('/api/users', usersRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/doctor', doctorRoutes);
 
+app.get('/',async(req,res)=>{
+  res.send({success:true,message:'hello'})
+})
+
 app.use(
   cors({
     origin: "*"
